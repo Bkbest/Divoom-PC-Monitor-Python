@@ -61,6 +61,9 @@ This project is a Python implementation of the Divoom PC Monitor originally writ
 4. (Optional) Setup SystemD service by coping the OS associated service file:
    ```bash
    cd /systemd-configs/<OS>/divoom_monitor.service  /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable divoom_monitor.service
+   sudo systemctl start divoom_monitor.service
    ```
 
 ## Author
