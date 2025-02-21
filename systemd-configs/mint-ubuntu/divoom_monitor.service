@@ -1,0 +1,13 @@
+[Unit]
+Description=Divoom Times Gate System Monitor
+After=network.target
+
+[Service]
+ExecStart=/home/<USER>/.venv/bin/python /path/to/file/divoom_pc_monitor.py --interval_in_seconds 10 --verbose
+WorkingDirectory=/path/to/dir/divoom-pc-monitor-python
+Restart=always
+User=<USER>
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target
