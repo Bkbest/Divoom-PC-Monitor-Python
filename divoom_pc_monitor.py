@@ -7,7 +7,7 @@ from functions.cpu_util import cpu_usage
 from functions.gpu_util import gpu_main
 from functions.mem_util import mem_usage
 from functions.hdd_util import hdd_usage
-from functions.send_system_info import send_system_info
+from functions.http_post import send_system_info
 
 def collect_and_send_info(interval, verbose):
     # Print start data/time
@@ -37,7 +37,7 @@ def collect_and_send_info(interval, verbose):
         print(f"Disk with highest utilization: {disk_name}, Utilization: {disk_util}%")
 
     # Send system information to the Divoom Times Gate device
-    send_system_info(device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, cpu_util, cpu_temp, gpu_util, gpu_temp, mem_util, disk_util, verbose)
+    send_system_info(device_ip, lcd_index, cpu_util, cpu_temp, gpu_util, gpu_temp, mem_util, disk_util, verbose)
 
     # Print end data/time
     print(f"Data collection completed at {time.strftime('%Y-%m-%d %H:%M:%S')}")

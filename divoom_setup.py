@@ -4,6 +4,7 @@
 from functions.device_endpoint import get_device_info, get_lcd_info
 from functions.get_os_drives import get_os_drives
 from functions.gen_config import generate_config_file
+from functions.http_post import send_select_clock
 
 # Function to enter a new line, print separator, and enter a new line all in one
 def separator():
@@ -35,3 +36,8 @@ device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, hard_drive = ga
 
 # Write gathered variables to configuration file
 generate_config_file(device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, hard_drive)
+
+# Send Select Clock to the Divoom Times Gate device
+print('Establishing Divoom PC Monitor app on the Divoom device - LCD Clock: ' + str(lcd_index))
+send_select_clock(device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, True)
+separator()

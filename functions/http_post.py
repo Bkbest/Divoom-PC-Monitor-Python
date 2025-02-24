@@ -3,7 +3,21 @@
 import json
 import requests
 
-def send_system_info(device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, cpu_util, cpu_temp, gpu_util, gpu_temp, mem_util, disk_util, verbose):
+def check_reponse_code(system_response, verbose):
+    try:
+        response_data = json.loads(system_response.text)
+        if response_data.get("error_code") == 0:
+            print("\033[92mHTTP Post - OKAY!\033[0m")
+        else:
+            print("\033[91mHTTP Post - ERROR!\033[0m")
+        if verbose:
+            print(f"System Information Response: {system_response.text}")
+    except json.JSONDecodeError:
+        print("\033[91mRESPONSE - ERROR! (Invalid JSON)\033[0m")
+        if verbose:
+            print(f"System Information Response: {system_response.text}")
+
+def send_select_clock(device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, verbose):
     # Send Select Clock to the Divoom Times Gate device
     post_info_clock = {
         "Command": "Channel/SetClockSelectId",
@@ -24,8 +38,10 @@ def send_system_info(device_id, device_ip, lcd_independence, lcd_index, lcd_cloc
         data=param_info_clock,
         headers={"Content-Type": "application/json"}
     )
-    print(f"Select Clock Response: {clock_response.text}")
 
+    check_reponse_code(clock_response, verbose)
+
+def send_system_info(device_ip, lcd_index, cpu_util, cpu_temp, gpu_util, gpu_temp, mem_util, disk_util, verbose):
     # Change lcd_index to integer
     lcd_index = int(lcd_index)
     
@@ -58,4 +74,5 @@ def send_system_info(device_id, device_ip, lcd_independence, lcd_index, lcd_cloc
         data=param_info_system,
         headers={"Content-Type": "application/json"}
     )
-    print(f"System Information Response: {system_response.text}")
+
+    check_reponse_code(system_response, verbose)

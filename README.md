@@ -21,7 +21,7 @@ This project is a Python implementation of the Divoom PC Monitor originally writ
 ## Usage
 
 1. **Configuration**: 
-   - Run `divoom_setup.py` to create the necessary configuration file.
+   - Run `divoom_setup.py` to create the necessary configuration file and established the Divoom PC Monitor app on a LCD face.
    
 2. **Running the Script**:
    - Execute `divoom_pc_monitor.py`
@@ -51,20 +51,25 @@ This project is a Python implementation of the Divoom PC Monitor originally writ
    python divoom_setup.py
    ```
 
-   ⚠️ **Attention:** Be sure to set the PC Monitor app to the desired device LCD before running the setup script via the Divoom app. During the setup script, select the LCD with the Device ID of 625.
+   ⚠️ **Attention:** If the PC Monitor app (625) is currently displayed on a 'LCD face', the setup output will include 'Divoom PC Monitor'.  This message doesn't restrict which 'LCD face' you can ultimately use; the app can be assigned to any face regardless of its initial state.
 
 3. Execute main monitor:
    ```bash
    python divoom_pc_monitor.py -i 10 -v
    ```
 
-4. (Optional) Setup SystemD service by coping the OS associated service file:
+4. (Optional) Setup SystemD service by copying the distro associated service file:
    ```bash
-   cd /systemd-configs/<OS>/divoom_monitor.service  /etc/systemd/system/
+   cp /systemd-configs/<DISTRO>/divoom_monitor.service  /etc/systemd/system/
    sudo systemctl daemon-reload
    sudo systemctl enable divoom_monitor.service
    sudo systemctl start divoom_monitor.service
    ```
+
+## Work In Progress
+
+1. The number one WIP is getting Intel cards (Arc) to properly report GPU usage and temps. This is a current WIP for the Linux kernel team and will be implemented into this project once available.
+2. An on-going bug hunt and optimization. User contributions/recommendations are welcome.
 
 ## Author
 

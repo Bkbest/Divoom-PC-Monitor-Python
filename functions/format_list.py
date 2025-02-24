@@ -16,6 +16,8 @@ def format_lcd_list(lcds):
         print(f'LCD {index + 1}:')  # Use enumerate for correct index, starting from 1
         print(f'------')
         print(f'Clock ID: {lcd.get("LcdClockId")}') # Removed LcdSelectIndex, no longer needed
+        if lcd.get("LcdClockId") == 625:
+            print("Divoom PC Monitor")
         print(f'Image Pixel ID: {lcd.get("ClockImagePixelId")}')
         print()
 
