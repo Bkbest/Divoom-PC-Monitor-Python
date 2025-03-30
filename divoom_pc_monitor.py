@@ -9,7 +9,7 @@ from functions.mem_util import mem_usage
 from functions.hdd_util import hdd_usage
 from functions.http_post import send_system_info
 
-def collect_and_send_info(interval, verbose):
+def collect_and_send_info(interval, verbose, testing):
     # Print start data/time
     print(f"Data collection started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
 
@@ -37,7 +37,8 @@ def collect_and_send_info(interval, verbose):
         print(f"Disk with highest utilization: {disk_name}, Utilization: {disk_util}%")
 
     # Send system information to the Divoom Times Gate device
-    send_system_info(device_ip, lcd_index, cpu_util, cpu_temp, gpu_util, gpu_temp, mem_util, disk_util, verbose)
+    if not testing:
+        send_system_info(device_ip, lcd_index, cpu_util, cpu_temp, gpu_util, gpu_temp, mem_util, disk_util, verbose)
 
     # Print end data/time
     print(f"Data collection completed at {time.strftime('%Y-%m-%d %H:%M:%S')}")
@@ -45,7 +46,7 @@ def collect_and_send_info(interval, verbose):
     print("-" * 50)
 
     # Set up the next timer
-    Timer(interval, collect_and_send_info, [interval, verbose]).start()
+    Timer(interval, collect_and_send_info, [interval, verbose, testing]).start()
 
 def main():
     parser = argparse.ArgumentParser(
@@ -64,11 +65,23 @@ def main():
         default=False,
         help="Display verbose output on the console"
     )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="v1.4.0"
+    )
+    parser.add_argument(
+        "--testing",
+        action="store_true",
+        dest="testing",
+        default=False,
+        help="Run in testing mode; do not send data to the Divoom Times Gate device"
+    )
 
     args = parser.parse_args()
 
     # Start the initial data collection and sending process
-    collect_and_send_info(args.interval_in_seconds, args.verbose)
+    collect_and_send_info(args.interval_in_seconds, args.verbose, args.testing)
 
 if __name__ == "__main__":
     main()

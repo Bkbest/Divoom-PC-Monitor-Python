@@ -1,10 +1,10 @@
-# Divoom PC Monitor Python - Python Implementation for Linux Systems
+# Divoom PC Monitor Python - Implementation for Linux Systems
 
-This repository contains the Python code that interfaces with the Divoom PC Monitor application on the Divoom Times Gate to monitor system information for Linux systems.
+This repository contains the Python code that interfaces with the Divoom PC Monitor application on the Divoom Times Gate or Divoom Pixoo64 to monitor system information for Linux systems.
 
 ## Overview
 
-This project is a Python implementation of the Divoom PC Monitor originally written in C# by DivoomDevelop. It allows users to monitor various system metrics and display them on their Divoom Times Gate.
+This project is a Python implementation of the Divoom PC Monitor originally written in C# by DivoomDevelop. It allows users to monitor various system metrics and display them on their Divoom Times Gate or Divoom Pixoo64.
 
 ## Features
 

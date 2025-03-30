@@ -24,7 +24,7 @@ def send_select_clock(device_id, device_ip, lcd_independence, lcd_index, lcd_clo
         "LcdIndependence": lcd_independence,
         "DeviceId": device_id,
         "LcdIndex": lcd_index,
-        "ClockId": lcd_clock_id
+        "ClockId": 625
     }
 
     param_info_clock = json.dumps(post_info_clock)

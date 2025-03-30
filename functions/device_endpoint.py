@@ -1,8 +1,8 @@
 # Imports
 import requests
 
-from functions.get_selection import get_device_selection, get_lcd_selection
-from functions.format_list import format_device_list, format_lcd_list
+from functions.get_selection import get_device_selection, get_lcd_selection, get_lcd_independence_selection
+from functions.format_list import format_device_list, format_lcd_list, format_lcd_independence_list
 
 # Get device list from the network endpoint, output the formatted list, and return the selected device
 def get_device_info():
@@ -28,10 +28,19 @@ def get_lcd_info(device_id):
         lcd_independence_list = data.get('LcdIndependenceList', [])
 
         if not lcd_independence_list:
-            print("LcdIndependenceList is empty.")
-            return None, None, None
+            print("LcdIndependenceList is empty. Assuming device is Pixoo64 or similar.")
+            print("LCD Independence set to 0, LCD Index set to 0, LCD Clock ID set to 625")
+            return 0, 0, 625
 
-        lcd_list = lcd_independence_list[0].get('LcdList', [])
+        # If more then one LCD Independence is available, select one
+        if len(lcd_independence_list) > 1:
+            print("Select a LCD Group (Independence):")
+            format_lcd_independence_list(lcd_independence_list)
+            selected_lcd_independence = get_lcd_independence_selection(lcd_independence_list)
+        else:
+            selected_lcd_independence = 0
+
+        lcd_list = lcd_independence_list[selected_lcd_independence].get('LcdList', [])
 
         if not lcd_list:
             print("LcdList is empty.")
@@ -41,7 +50,7 @@ def get_lcd_info(device_id):
         selected_lcd_index = get_lcd_selection(lcd_list)
 
         return (
-            data.get('LcdIndependence'),
+            lcd_independence_list[selected_lcd_independence].get('LcdIndependence'),
             selected_lcd_index, # Return the actual index
             lcd_list[selected_lcd_index].get('LcdClockId')
         )

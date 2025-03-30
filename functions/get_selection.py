@@ -11,6 +11,19 @@ def get_device_selection(devices):
         except ValueError:
             print('Invalid input. Please enter a number.')
 
+# Get user selection for LCD Independence
+def get_lcd_independence_selection(lcd_independences):
+    lcd_independence_count = len(lcd_independences)
+    while True:
+        try:
+            selection = int(input('Select an LCD Independence: '))
+            if 1 <= selection <= lcd_independence_count:  # Use <= for upper bound
+                return selection - 1  # Return the actual index
+            else:
+                print("Invalid selection. Please enter a number within the range.")
+        except ValueError:
+            print('Invalid input. Please enter a number.')
+            
 # Get user selection for LCD
 def get_lcd_selection(lcds):
     lcd_count = len(lcds)

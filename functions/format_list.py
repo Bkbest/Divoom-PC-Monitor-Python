@@ -10,6 +10,14 @@ def format_device_list(devices):
         print(f'Hardware Version: {device.get("Hardware")}')
         print()
 
+# Format the LCD Independence json and output
+def format_lcd_independence_list(lcd_independences):
+    for index, lcd_independence in enumerate(lcd_independences):
+        print(f'LCD Group {index + 1}:')  # Use enumerate for correct index, starting from 1
+        print(f'------------')
+        print(f'Independence ID: {lcd_independence.get("LcdIndependence")}')
+        print()
+
 # Format the LCD json and output
 def format_lcd_list(lcds):
     for index, lcd in enumerate(lcds):
