@@ -3,3 +3,4 @@ config.env
 .vscode/
 venv/
 .venv/
+CLAUDE.md

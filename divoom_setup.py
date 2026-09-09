@@ -2,13 +2,15 @@
 
 # Imports
 from functions.device_endpoint import get_device_info, get_lcd_info
-from functions.get_os_drives import get_os_drives
 from functions.gen_config import generate_config_file
+from functions.get_os_drives import get_os_drives
 from functions.http_post import send_select_clock
+
 
 # Function to enter a new line, print separator, and enter a new line all in one
 def separator():
-    print('\n' + '-' * 50 + '\n')
+    print("\n" + "-" * 50 + "\n")
+
 
 # Gather required variables
 def gather_variables():
@@ -20,24 +22,30 @@ def gather_variables():
     separator()
 
     # Print all gathered variables
-    print(f'Device ID: {device_id}')
-    print(f'Device IP: {device_ip}')
-    print(f'Lcd Independence: {lcd_independence}')
-    print(f'Lcd Index: {lcd_index}')
-    print(f'Lcd Clock ID: {lcd_clock_id}')
-    print(f'Hard Drive: {hard_drive}')
+    print(f"Device ID: {device_id}")
+    print(f"Device IP: {device_ip}")
+    print(f"Lcd Independence: {lcd_independence}")
+    print(f"Lcd Index: {lcd_index}")
+    print(f"Lcd Clock ID: {lcd_clock_id}")
+    print(f"Hard Drive: {hard_drive}")
     separator()
 
     return device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, hard_drive
 
 
-
-device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, hard_drive = gather_variables()
+device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, hard_drive = (
+    gather_variables()
+)
 
 # Write gathered variables to configuration file
-generate_config_file(device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, hard_drive)
+generate_config_file(
+    device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, hard_drive
+)
 
 # Send Select Clock to the Divoom Times Gate device
-print('Establishing Divoom PC Monitor app on the Divoom device - LCD Clock: ' + str(lcd_index))
+print(
+    "Establishing Divoom PC Monitor app on the Divoom device - LCD Clock: "
+    + str(lcd_index)
+)
 send_select_clock(device_id, device_ip, lcd_independence, lcd_index, lcd_clock_id, True)
 separator()

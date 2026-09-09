@@ -8,15 +8,93 @@ This project is a Python implementation of the Divoom PC Monitor originally writ
 
 ## Features
 
-- **System Metrics Displayed**: 
-  - CPU usage percentage
-  - CPU temperature
-  - RAM usage
-  - GPU usage (NVIDIA & AMD)
-  - GPU temperature (NVIDIA & AMD)
-  - HDD usage (dynamic drive selection based on highest usage)
+- **System Metrics Displayed**:
+   - CPU usage percentage
+   - CPU temperature
+   - RAM usage
+   - GPU usage (NVIDIA, AMD, and Intel via `nvtop`)
+   - GPU temperature (NVIDIA, AMD, and Intel via `nvtop`)
+   - HDD usage (dynamic drive selection based on highest usage)
 - **Easy Setup**: Configuration script simplifies the setup process.
 - **Scheduled Task Support**: Users can copy the SystemD config files for easy systemctl support.
+
+## Requirements
+
+The project needs both Python packages and a few Linux command-line tools that are called directly by the scripts.
+
+### Hardware and network
+
+- A Divoom Times Gate or Pixoo64 on the same LAN as the Linux host
+- Internet access during `divoom_setup.py` so the script can query Divoom cloud endpoints
+- A Linux system with Python 3
+
+### Python packages
+
+Install the Python dependencies with:
+
+```bash
+pip install -r requirements.txt
+```
+
+This installs:
+
+- `psutil`
+- `requests`
+
+### Required Linux packages / binaries
+
+These binaries are used directly by the code and should be installed before running setup or the monitor loop:
+
+- `lspci` from `pciutils`
+   Used by `functions/gpu_util.py` to detect whether the GPU is NVIDIA, AMD, or Intel.
+- `sensors` from `lm-sensors`
+   Used by `functions/cpu_util.py` to read CPU temperatures.
+- `iostat` from `sysstat`
+   Used by `functions/get_os_drives.py` during setup and by `functions/hdd_util.py` during every monitor update.
+
+Example installs for the common required packages:
+
+```bash
+# Fedora
+sudo dnf install pciutils lm_sensors sysstat
+
+# Debian / Ubuntu
+sudo apt install pciutils lm-sensors sysstat
+
+# Arch Linux
+sudo pacman -S pciutils lm_sensors sysstat
+```
+
+### GPU vendor-specific requirements
+
+- NVIDIA GPUs: `nvidia-smi`
+   Usually provided by the installed NVIDIA driver package.
+- AMD GPUs: `rocm-smi`
+   Usually provided by ROCm or the distro package that ships the ROCm SMI utility.
+- Intel GPUs: `nvtop`
+   This project currently uses `nvtop -s` to collect Intel GPU usage and temperature.
+
+Example installs for vendor-specific GPU tooling:
+
+```bash
+# Fedora - Intel
+sudo dnf install nvtop
+
+# Debian / Ubuntu - Intel
+sudo apt install nvtop
+
+# Arch Linux - Intel
+sudo pacman -S nvtop
+```
+
+`nvtop` is now resolved from your `PATH`, so it does not need to live at `/usr/bin/nvtop`.
+
+For NVIDIA and AMD, the exact package name for `nvidia-smi` or `rocm-smi` depends on how your driver stack is installed on your distro.
+
+### Optional system software
+
+- `systemd`
+   Only required if you want to run the monitor as a service with the provided unit files.
 
 ## Usage
 
@@ -68,7 +146,7 @@ This project is a Python implementation of the Divoom PC Monitor originally writ
 
 ## Work In Progress
 
-1. The number one WIP is getting Intel cards (Arc) to properly report GPU usage and temps. This is a current WIP for the Linux kernel team and will be implemented into this project once available.
+1. Intel GPU support currently depends on `nvtop` and the underlying Linux driver/kernel stack, so behavior may vary by device and distro.
 2. An on-going bug hunt and optimization. User contributions/recommendations are welcome.
 
 ## Author
